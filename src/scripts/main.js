@@ -19,14 +19,21 @@ function getError() {
   document.body.appendChild(mainContainer);
 }
 
-logo.addEventListener('click', () => {
-  new Promise((resolve) => resolve()).then(getSuccess).catch(getError);
+const promise1 = new Promise((resolve) => {
+  logo.addEventListener(
+    'click',
+    () => {
+      resolve();
+    },
+    { once: true },
+  );
 });
 
-new Promise((resolve, reject) => {
+const promise2 = new Promise((resolve, reject) => {
   setTimeout(() => {
     reject(new Error('Promise was rejected!'));
   }, 3000);
-})
-  .then(getSuccess)
-  .catch(getError);
+});
+
+promise1.then(getSuccess).catch(getError);
+promise2.then(getSuccess).catch(getError);
